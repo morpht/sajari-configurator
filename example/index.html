@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Sajari Drupal</title>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <noscript>
+      You need to enable JavaScript to run this app.
+    </noscript>
+
+    <!-- Load React. -->
+    <!-- Note: when deploying, replace "development.js" with "production.min.js". -->
+    <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+
+    <!-- Load SajariDrupal. -->
+    <script src="../dist/bundle.js"></script>
+
+    <!-- Run SajariDrupal. -->
+    <script type="text/javascript">
+      var config = {
+        // General.
+        project: "12345678910",
+        collection: "collection_name",
+        pipeline: "website",
+        // Results.
+        fields: [
+          "url",
+          "title",
+          "image",
+          "description"
+        ],
+        resultsPerPage: 10,
+        // Pager.
+        pager: true,
+        // Tracking.
+        tracking: true,
+        // Query.
+        maxSuggestions: 6,
+        inputPlaceholder: "Enter your search term",
+        param: "search",
+        // Filter. Multiple filters look like:
+        // "((domain="example.com")) AND ((product='pants'))"
+        filter: 'type="page"',
+        // Tabs.
+        allTabLabel: "All",
+        defaultTab: "All",
+        // Note: Lowercase machine names will cause an empty response.
+        tabs: [
+          {
+            name: "Domain",
+            title: "Domain",
+            filter: "domain='example.com'"
+          },
+          {
+            name: "Subdomain",
+            title: "Subdomain",
+            filter: "domain='subdomain.example.com'"
+          }
+        ],
+        // Facets.
+        facets: [
+          {
+            name: "type",
+            title: "Type"
+          },
+          {
+            name: "tag",
+            title: "Tag"
+          }
+        ]
+      };
+
+      SajariDrupal.init(config, "root");
+
+    </script>
+  </body>
+
+</html>
