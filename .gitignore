@@ -1,1 +1,8 @@
+# Node.
 node_modules
+
+# Software.
+.idea
+
+# Mac.
+.DS_Store

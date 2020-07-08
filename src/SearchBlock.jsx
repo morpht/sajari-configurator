@@ -2,25 +2,35 @@ import React, { Component } from "react";
 import { render } from "react-dom";
 import { hot } from "react-hot-loader";
 import {
-  Provider,
+  // Controllers.
   Pipeline,
   Values,
-  NoTracking,
-  ClickTracking,
+  // Components.
+  Provider,
   Search,
   Response,
   Input,
   Results,
   Summary,
   Paginator,
+  // Filters.
   Filter,
   FilterProvider,
-  CountAggregateFilter,
-  Checkbox,
   CombineFilters,
+  // Tabs
   Tabs,
+  // Facets.
+  Checkbox,
+  CountAggregateFilter,
+  // Ranges.
+  RangeFilter,
+  RangeSlider,
+  // Events.
   EVENT_SELECTION_UPDATED,
-  EVENT_RESPONSE_UPDATED
+  EVENT_RESPONSE_UPDATED,
+  // Analytics.
+  NoTracking,
+  ClickTracking
 } from "@sajari/sdk-react";
 
 class SearchBlock extends Component {
@@ -114,8 +124,18 @@ class SearchBlock extends Component {
       }
     }
 
+    // Setup range filters.
+    this.rangeFilters = [];
+    if (this.props.config.ranges != undefined) {
+      for (var range of this.props.config.ranges) {
+        let rangeFilter = new RangeFilter(range.name, [range.defaultRange[0], range.defaultRange[1]]);
+        rangeFilter.set(range.totalRange[0], range.totalRange[1]);
+        this.rangeFilters.push(rangeFilter);
+      }
+    }
+
     // Combine filters.
-    this.filters = CombineFilters([baseFilter, this.tabsFilter, ...this.facetFilters]);
+    this.filters = CombineFilters([baseFilter, this.tabsFilter, ...this.facetFilters, ...this.rangeFilters]);
 
     // Apply filters to values controller.
     this.values.set({ filter: () => this.filters.filter() });
@@ -220,14 +240,14 @@ class SearchBlock extends Component {
         return null;
       }
       // Show facets after search.
-      return(
+      return (
         <FilterProvider filter={props.filter}>
           <div className={"sj-facet"}>
             <h3>{props.name}</h3>
             <ul>
               {Object.keys(props.counts).map((i) => {
-                return(
-                  <li key={props.counts[i].name}>
+                return (
+                  <li key={"facets-item-" + props.counts[i].name}>
                     <Checkbox name={props.counts[i].name} />
                     <label>{props.counts[i].name} ({props.counts[i].count})</label>
                   </li>
@@ -236,6 +256,34 @@ class SearchBlock extends Component {
             </ul>
           </div>
         </FilterProvider>
+      );
+    };
+
+    var Ranges = (props) => {
+      // Ensure ranges configured.
+      if (this.props.config.ranges == undefined) {
+        return null;
+      }
+      // Show range sliders.
+      return (
+        <ul>
+          {Object.keys(this.rangeFilters).map((key) => {
+            // State.
+            const [filterOutput, setFilterOutput ] = React.useState(this.rangeFilters[key].filter());
+            const removeListener = this.rangeFilters[key].listen(EVENT_SELECTION_UPDATED, () => {
+              setFilterOutput(this.rangeFilters[key].filter())
+            });
+            // Slider.
+            return(
+              <li key={"range-slider-item-" + this.props.config.ranges[key].name}>
+                <RangeSlider
+                  filter={this.rangeFilters[key]}
+                  step={this.rangeFilters[key].step}
+                />
+              </li>
+            );
+          })}
+        </ul>
       );
     };
 
@@ -248,21 +296,40 @@ class SearchBlock extends Component {
       pager = <Paginator />;
     }
 
+    ////
+    // SEARCH BLOCK.
+    ////
+
     return(
       // Provide state, send query and return response.
       <Provider search={{ pipeline, values, config }}>
         <div className={"sj-block"}>
+
           <h1>Search Block</h1>
+
           <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
+
           {tabs}
+
           {Object.keys(this.facetFilters).map((key) => {
-            return(<Facets filter={this.facetFilters[key]} counts={this.state.counts[key]} key={key} name={this.props.config.facets[key].title} />);
+            return(
+              <Facets
+                filter={this.facetFilters[key]}
+                counts={this.state.counts[key]}
+                key={"facets-" + key}
+                name={this.props.config.facets[key].title}
+              />
+            );
           })}
+
+          <Ranges />
+
           <Response>
             <Summary />
             <Results />
             {pager}
           </Response>
+
         </div>
       </Provider>
     )
