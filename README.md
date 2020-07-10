@@ -5,6 +5,7 @@ A library to integrate Sajari React SDK components with Drupal:
 * Filters
 * Facets
 * Range Slider
+* Sort select
 * Pager
 
 This library is the frontend JS that is consumed by the module:

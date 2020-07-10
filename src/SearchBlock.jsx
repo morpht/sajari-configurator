@@ -245,7 +245,7 @@ class SearchBlock extends Component {
 
     var Facets = (props) => {
       // Default facets to empty.
-      if (this.props.config.facets == undefined) {
+      if (!this.props.config.facetsEnabled || this.props.config.facets == undefined) {
         return null;
       }
       // Ensure facet has results.
@@ -277,6 +277,11 @@ class SearchBlock extends Component {
     ////
 
     var Range = (props) => {
+      // Hide range when no config.
+      if (!this.props.config.rangesEnabled || this.props.config.ranges == undefined) {
+        return null;
+      }
+      // UI.
       return (
         <div className={"sj-range-" + props.name}>
           <h3>{props.title}</h3>
@@ -287,6 +292,32 @@ class SearchBlock extends Component {
         </div>
       );
     };
+
+    var SortSelect = (props) => {
+      // Hide sort when no config.
+      if (!this.props.config.sortsEnabled || this.props.config.sorts == undefined) {
+        return null;
+      }
+      // UI.
+      return (
+        <select
+          className="sj-sort"
+          onChange={event => {
+            this.values.set(JSON.parse(event.target.value));
+            this.pipeline.search(values.get());
+           }}
+         >
+          <option value={JSON.stringify({ sort: "" })}>{this.props.config.sortsDefault}</option>
+          {Object.keys(this.props.config.sorts).map((i) => {
+            var option = this.props.config.sorts[i];
+            var order = option.descending ? "-" : "";
+            return (
+              <option value={JSON.stringify({ sort: order + option.name })} key={"option-" + option.title}>{option.title}</option>
+            )
+          })}
+        </select>
+      );
+    }
 
     ////
     // PAGER.
@@ -311,6 +342,8 @@ class SearchBlock extends Component {
           <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
 
           {tabs}
+
+          <SortSelect />
 
           {Object.keys(this.facetFilters).map((key) => {
             return(
