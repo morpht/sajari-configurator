@@ -4,6 +4,7 @@ A library to integrate Sajari React SDK components with Drupal:
 * Tabs
 * Filters
 * Facets
+* Range Slider
 * Pager
 
 This library is the frontend JS that is consumed by the module:
