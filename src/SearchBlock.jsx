@@ -55,7 +55,8 @@ class SearchBlock extends Component {
     ////
 
     this.state = {
-      counts: []
+      counts: [],
+      oldCounts: ''
     };
 
     ////
@@ -128,8 +129,8 @@ class SearchBlock extends Component {
     this.rangeFilters = [];
     if (this.props.config.ranges != undefined) {
       for (var range of this.props.config.ranges) {
-        let rangeFilter = new RangeFilter(range.name, [range.defaultRange[0], range.defaultRange[1]]);
-        rangeFilter.set(range.totalRange[0], range.totalRange[1]);
+        let rangeFilter = new RangeFilter(range.name, [...range.totalRange]);
+        rangeFilter.set(...range.defaultRange);
         this.rangeFilters.push(rangeFilter);
       }
     }
@@ -176,17 +177,29 @@ class SearchBlock extends Component {
       this.pipeline.search(this.values.get());
     });
 
-    // Update facet when search response returned.
+    // Handle responses.
     this.pipeline.listen(EVENT_RESPONSE_UPDATED, () => {
+
       // Handle when a bad query results in no response.
       if (this.pipeline.response.response == undefined) {
         console.log("EMPTY RESPONSE - Check query correct:");
         console.log(this.pipeline.response);
         return;
       }
-      // Set facets.
+
+      // Update facets.
       if (this.pipeline.response.response.get("aggregates")) {
-        this.setCounts(this.pipeline);
+        var counts = this.pipeline.response.response.get("aggregates");
+
+        // Assert that response contains changed facets. (Not all responses are for facets)
+        // Prevent infinite loop where setCounts() -> setState() triggers EVENT_RESPONSE_UPDATED.
+        var newCounts = JSON.stringify(counts);
+        if (newCounts != this.state.oldCounts) {
+          // Update facets.
+          this.setCounts(this.pipeline);
+          // Store counts to keep track of changes.
+          this.setState({oldCounts: newCounts});
+        }
       }
 
       // Update URL when query changes.
@@ -242,12 +255,12 @@ class SearchBlock extends Component {
       // Show facets after search.
       return (
         <FilterProvider filter={props.filter}>
-          <div className={"sj-facet"}>
-            <h3>{props.name}</h3>
+          <div className={"sj-facets"}>
+            <h3>{props.title}</h3>
             <ul>
               {Object.keys(props.counts).map((i) => {
                 return (
-                  <li key={"facets-item-" + props.counts[i].name}>
+                  <li key={"sj-facets-item-" + props.counts[i].name}>
                     <Checkbox name={props.counts[i].name} />
                     <label>{props.counts[i].name} ({props.counts[i].count})</label>
                   </li>
@@ -259,31 +272,19 @@ class SearchBlock extends Component {
       );
     };
 
-    var Ranges = (props) => {
-      // Ensure ranges configured.
-      if (this.props.config.ranges == undefined) {
-        return null;
-      }
-      // Show range sliders.
+    ////
+    // RANGE SLIDER
+    ////
+
+    var Range = (props) => {
       return (
-        <ul>
-          {Object.keys(this.rangeFilters).map((key) => {
-            // State.
-            const [filterOutput, setFilterOutput ] = React.useState(this.rangeFilters[key].filter());
-            const removeListener = this.rangeFilters[key].listen(EVENT_SELECTION_UPDATED, () => {
-              setFilterOutput(this.rangeFilters[key].filter())
-            });
-            // Slider.
-            return(
-              <li key={"range-slider-item-" + this.props.config.ranges[key].name}>
-                <RangeSlider
-                  filter={this.rangeFilters[key]}
-                  step={this.rangeFilters[key].step}
-                />
-              </li>
-            );
-          })}
-        </ul>
+        <div className={"sj-range-" + props.name}>
+          <h3>{props.title}</h3>
+          <RangeSlider
+            filter={props.filter}
+            step={props.step}
+          />
+        </div>
       );
     };
 
@@ -316,13 +317,25 @@ class SearchBlock extends Component {
               <Facets
                 filter={this.facetFilters[key]}
                 counts={this.state.counts[key]}
+                title={this.props.config.facets[key].title}
+                name={this.props.config.facets[key].name}
                 key={"facets-" + key}
-                name={this.props.config.facets[key].title}
               />
             );
           })}
 
-          <Ranges />
+          {Object.keys(this.rangeFilters).map((key) => {
+            return(
+              <Range
+                brokenFilters={this.brokenFilters}
+                filter={this.rangeFilters[key]}
+                step={this.props.config.ranges[key].step}
+                title={this.props.config.ranges[key].title}
+                name={this.props.config.ranges[key].name}
+                key={"range-" + key}
+              />
+            );
+          })}
 
           <Response>
             <Summary />
