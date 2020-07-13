@@ -55,7 +55,7 @@ var config = {
   allTabLabel: "All",
   defaultTab: "All",
   // Note: Lowercase tab machine names currently cause a bad response:
-  // "Search request failed due to a configuration error.""
+  // "Search request failed due to a configuration error."
   tabsEnabled: true,
   tabs: [
     {
