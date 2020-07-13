@@ -11,6 +11,7 @@ import {
   Response,
   Input,
   Results,
+  Result,
   Summary,
   Paginator,
   // Filters.
@@ -32,6 +33,7 @@ import {
   NoTracking,
   ClickTracking
 } from "@sajari/sdk-react";
+import Handlebars from "handlebars";
 
 class SearchBlock extends Component {
 
@@ -329,10 +331,26 @@ class SearchBlock extends Component {
     }
 
     ////
+    // RESULTS TEMPLATE
+    ////
+
+    var results = <Results />
+
+    if (this.props.config.templateEnabled != undefined && this.props.config.templateEnabled == true && this.props.config.template != undefined) {
+      var template = Handlebars.compile(this.props.config.template);
+      var ResultsTemplate = ({values, token}) => {
+        return (
+          <div className="sj-results__result" dangerouslySetInnerHTML={{ __html: template(values) }} />
+        );
+      }
+      results = <Results ResultRenderer={ResultsTemplate} />;
+    }
+
+    ////
     // SEARCH BLOCK.
     ////
 
-    return(
+    return (
       // Provide state, send query and return response.
       <Provider search={{ pipeline, values, config }}>
         <div className={"sj-block"}>
@@ -372,7 +390,7 @@ class SearchBlock extends Component {
 
           <Response>
             <Summary />
-            <Results />
+            {results}
             {pager}
           </Response>
 
