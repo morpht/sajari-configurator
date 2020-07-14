@@ -21,17 +21,20 @@ https://www.drupal.org/project/sajari
 SajariDrupal.init(config, id);
 ```
 
-**config:** An object literal of configuration values. See [#configuration](Configuration).
-**id:** The ID of the div to put the search block in. Without the hash.
+**Parameters:**
+* `config` - An object literal of configuration values. See [#configuration](Configuration).
+* `id` - The ID of the div to put the search block in. Without the hash.
 
 ## Configuration
 
 ```javascript
 var config = {
+
   // General.
   project: "12345678910",
   collection: "example-collection",
   pipeline: "website",
+
   // Results.
   fields: [
     "title",
@@ -40,17 +43,22 @@ var config = {
     "image"
   ],
   resultsPerPage: 10,
+
   // Pager.
   pager: true,
+
   // Tracking.
   tracking: true,
+
   // Query.
   maxSuggestions: 6,
   inputPlaceholder: "Enter your search term",
   param: "search",
+
   // Filter. Multiple filters look like:
   // "((domain="one.example.com")) AND ((product='clothing'))"
   filter: 'type="article"',
+
   // Tabs.
   allTabLabel: "All",
   defaultTab: "All",
@@ -69,6 +77,7 @@ var config = {
       filter: "domain='two.example.com'"
     }
   ],
+
   // Facets.
   facetsEnabled: true,
   facets: [
@@ -81,6 +90,7 @@ var config = {
       title: "Topic"
     }
   ],
+
   // Ranges.
   rangesEnabled: true,
   ranges: [
@@ -92,6 +102,7 @@ var config = {
       step: 1
     }
   ],
+
   // Sort.
   sortsEnabled: false,
   sortsDefault: "Relevancy",
@@ -117,6 +128,7 @@ var config = {
       descending: false,
     }
   ],
+
   // Result template. Available variables configured via "fields" above.
   templateEnabled: true,
   template:
