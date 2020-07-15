@@ -22,7 +22,7 @@ SajariDrupal.init(config, id);
 ```
 
 **Parameters:**
-* `config` - An object literal of configuration values. See [#configuration](Configuration).
+* `config` - An object literal of configuration values. See [Configuration](#configuration).
 * `id` - The ID of the div to put the search block in. Without the hash.
 
 ## Configuration
