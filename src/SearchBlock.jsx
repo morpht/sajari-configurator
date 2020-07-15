@@ -355,8 +355,6 @@ class SearchBlock extends Component {
       <Provider search={{ pipeline, values, config }}>
         <div className={"sj-block"}>
 
-          <h1>Search Block</h1>
-
           <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
 
           {tabs}
