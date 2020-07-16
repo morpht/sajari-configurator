@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import { hot } from "react-hot-loader";
+
 import {
   // Controllers.
   Pipeline,
@@ -33,6 +34,8 @@ import {
   NoTracking,
   ClickTracking
 } from "@sajari/sdk-react";
+
+import CustomResults from "./CustomResults.jsx";
 import Handlebars from "handlebars";
 
 class SearchBlock extends Component {
@@ -334,15 +337,15 @@ class SearchBlock extends Component {
     ////
 
     var results = <Results className="sj-results"/>
-
-    if (this.props.config.templateEnabled != undefined && this.props.config.templateEnabled == true && this.props.config.template != undefined) {
-      var template = Handlebars.compile(this.props.config.template);
-      var ResultTemplate = ({values, token}) => {
-        return (
-          <div className="sj-results__result" dangerouslySetInnerHTML={{ __html: template(values) }} />
-        );
-      }
-      results = <Results className="sj-results" ResultRenderer={ResultTemplate} />;
+    if (this.props.config.resultsEnabled != undefined && this.props.config.resultsEnabled == true && this.props.config.resultsCallback != undefined) {
+      var html = '';
+      // 1. CustomResults calls processResults with results.
+      // 2. processResults requests HTML from resultsCallback.
+      // 3. processResults returns HTML to CustomResults.
+      // 4. CustomResults renders the HTML.
+      results = <CustomResults className="sj-results" processResults={(results) => {
+        return this.props.config.resultsCallback(results);
+      }} />;
     }
 
     ////
@@ -353,8 +356,6 @@ class SearchBlock extends Component {
       // Provide state, send query and return response.
       <Provider search={{ pipeline, values, config }}>
         <div className={"sj-block"}>
-
-          <h1>Search Block</h1>
 
           <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
 
