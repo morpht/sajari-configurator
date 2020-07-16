@@ -133,6 +133,7 @@ var config = {
       descending: false,
     }
   ],
+  
   // Results callback. (Use a custom template)
   // @param results - An array of results. Each result contains variables:
   // - title
