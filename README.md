@@ -133,14 +133,16 @@ var config = {
       descending: false,
     }
   ],
-  // Results callback. Use a custom template.
-  // @param results: An array of results. Each result contains variables:
+  // Results callback. (Use a custom template)
+  // @param results - An array of results. Each result contains variables:
   // - title
   // - description
   // - url
   // - image
+  // @return A string of HTML.
   resultsEnabled: true,
   resultsCallback: function(results) {
+    // Example only. Replace with your own rendering logic.
     var html = "<ul>";
     results.forEach(function(result) {
       html += "<li>" + result.title + "</li>";
