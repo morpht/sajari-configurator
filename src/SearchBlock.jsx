@@ -65,7 +65,6 @@ class SearchBlock extends Component {
     // CONTROLLERS.
     ////
 
-    // https://www.sajari.com/docs/user-guide/analytics/click-tracking/
     var tracking = new NoTracking();
     if (this.props.config.tracking) {
       tracking = new ClickTracking("url", this.props.config.qParam);
@@ -131,8 +130,8 @@ class SearchBlock extends Component {
     this.rangeFilters = [];
     if (this.props.config.ranges != undefined) {
       for (var range of this.props.config.ranges) {
-        let rangeFilter = new RangeFilter(range.name, [...range.totalRange]);
-        rangeFilter.set(...range.defaultRange);
+        let rangeFilter = new RangeFilter(range.name, [range.min, range.max]);
+        rangeFilter.set(range.min, range.max);
         this.rangeFilters.push(rangeFilter);
       }
     }
@@ -257,12 +256,12 @@ class SearchBlock extends Component {
       // Show facets after search.
       return (
         <FilterProvider filter={props.filter}>
-          <div className={"sj-facets"}>
-            <h3>{props.title}</h3>
+          <div className={"sj-facet"}>
+            <h3 className={"sj-facet__title"}>{props.title}</h3>
             <ul>
               {Object.keys(props.counts).map((i) => {
                 return (
-                  <li key={"sj-facets-item-" + props.counts[i].name}>
+                  <li key={"sj-facet__item sj-facet__item-" + props.counts[i].name}>
                     <Checkbox name={props.counts[i].name} />
                     <label>{props.counts[i].name} ({props.counts[i].count})</label>
                   </li>
@@ -286,7 +285,7 @@ class SearchBlock extends Component {
       // UI.
       return (
         <div className={"sj-range-" + props.name}>
-          <h3>{props.title}</h3>
+          <h3 className={"sj-range__title"}>{props.title}</h3>
           <RangeSlider
             filter={props.filter}
             step={props.step}
@@ -327,23 +326,23 @@ class SearchBlock extends Component {
 
     let pager;
     if (this.props.config.pager) {
-      pager = <Paginator />;
+      pager = <Paginator className="sj-pager"/>;
     }
 
     ////
     // RESULTS TEMPLATE
     ////
 
-    var results = <Results />
+    var results = <Results className="sj-results"/>
 
     if (this.props.config.templateEnabled != undefined && this.props.config.templateEnabled == true && this.props.config.template != undefined) {
       var template = Handlebars.compile(this.props.config.template);
-      var ResultsTemplate = ({values, token}) => {
+      var ResultTemplate = ({values, token}) => {
         return (
           <div className="sj-results__result" dangerouslySetInnerHTML={{ __html: template(values) }} />
         );
       }
-      results = <Results ResultRenderer={ResultsTemplate} />;
+      results = <Results className="sj-results" ResultRenderer={ResultTemplate} />;
     }
 
     ////
@@ -355,41 +354,51 @@ class SearchBlock extends Component {
       <Provider search={{ pipeline, values, config }}>
         <div className={"sj-block"}>
 
+          <h1>Search Block</h1>
+
           <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
 
           {tabs}
 
           <SortSelect />
 
-          {Object.keys(this.facetFilters).map((key) => {
-            return(
-              <Facets
-                filter={this.facetFilters[key]}
-                counts={this.state.counts[key]}
-                title={this.props.config.facets[key].title}
-                name={this.props.config.facets[key].name}
-                key={"facets-" + key}
-              />
-            );
-          })}
+          <div className="sj-facets">
+            {Object.keys(this.facetFilters).map((key) => {
+              return(
+                <Facets
+                  filter={this.facetFilters[key]}
+                  counts={this.state.counts[key]}
+                  title={this.props.config.facets[key].title}
+                  name={this.props.config.facets[key].name}
+                  key={"facet-" + key}
+                />
+              );
+            })}
+          </div>
 
-          {Object.keys(this.rangeFilters).map((key) => {
-            return(
-              <Range
-                brokenFilters={this.brokenFilters}
-                filter={this.rangeFilters[key]}
-                step={this.props.config.ranges[key].step}
-                title={this.props.config.ranges[key].title}
-                name={this.props.config.ranges[key].name}
-                key={"range-" + key}
-              />
-            );
-          })}
+          <div className="sj-ranges">
+            {Object.keys(this.rangeFilters).map((key) => {
+              return(
+                <Range
+                  brokenFilters={this.brokenFilters}
+                  filter={this.rangeFilters[key]}
+                  step={this.props.config.ranges[key].step}
+                  title={this.props.config.ranges[key].title}
+                  name={this.props.config.ranges[key].name}
+                  key={"range-" + key}
+                />
+              );
+            })}
+          </div>
 
           <Response>
+
             <Summary />
+
             {results}
+
             {pager}
+
           </Response>
 
         </div>

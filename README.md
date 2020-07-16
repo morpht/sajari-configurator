@@ -1,6 +1,8 @@
-# Sajari Drupal
+# Sajari Configurator
 
-A library to integrate Sajari React SDK components with Drupal:
+Access the Sajari React SDK via a simple Javascript API.
+
+Supports:
 * Tabs
 * Filters
 * Facets
@@ -9,20 +11,22 @@ A library to integrate Sajari React SDK components with Drupal:
 * Result
 * Pager
 
-This library is the frontend JS that is consumed by the module:
-https://www.drupal.org/project/sajari
+Projects using this API:
+* https://www.drupal.org/project/sajari
+
+This library is not endorsed or supported by Sajari.
 
 ## Usage
 
 1. Include `dist/bundle.js`
-2. Create a `SajariDrupal` object with:
+2. Create a `SajariConfigurator` object with:
 
 ```javascript
-SajariDrupal.init(config, id);
+SajariConfigurator.init(config, id);
 ```
 
 **Parameters:**
-* `config` - An object literal of configuration values. See [Configuration](#configuration).
+* `config` - An object literal of configuration values. See [#configuration](Configuration).
 * `id` - The ID of the div to put the search block in. Without the hash.
 
 ## Configuration
@@ -48,6 +52,7 @@ var config = {
   pager: true,
 
   // Tracking.
+  // See: https://www.sajari.com/docs/user-guide/analytics/click-tracking/
   tracking: true,
 
   // Query.
@@ -97,8 +102,8 @@ var config = {
     {
       name: "popularityScore",
       title: "Popularity",
-      totalRange: [0, 100],
-      defaultRange: [0, 80],
+      min: 0,
+      max: 100,
       step: 1
     }
   ],

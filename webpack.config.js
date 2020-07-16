@@ -27,7 +27,7 @@ module.exports = {
     path: path.resolve(__dirname, "dist/"),
     publicPath: "/dist/",
     filename: "bundle.js",
-    library: 'SajariDrupal',
+    library: 'SajariConfigurator',
     libraryTarget: 'umd',
     umdNamedDefine: true,
   },
