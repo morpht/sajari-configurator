@@ -133,12 +133,21 @@ var config = {
       descending: false,
     }
   ],
-
-  // Result template. Available variables configured via "fields" above.
-  templateEnabled: true,
-  template:
-    '<h3>{{title}}</h3>' +
-    '<a class="button" href="{{url}}">Read more...</a>'
+  // Results callback. Use a custom template.
+  // @param results: An array of results. Each result contains variables:
+  // - title
+  // - description
+  // - url
+  // - image
+  resultsEnabled: true,
+  resultsCallback: function(results) {
+    var html = "<ul>";
+    results.forEach(function(result) {
+      html += "<li>" + result.title + "</li>";
+    });
+    html += "</ul>"
+    return html;
+  }
 };
 ```
 
