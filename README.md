@@ -157,6 +157,51 @@ var config = {
 };
 ```
 
+## Example CSS
+
+Almost no styling is included by default. You should add your own:
+
+```css
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.sc {
+  font-family: "Arial";
+}
+
+.sj__tabs {
+  margin-top: 1rem;
+}
+
+.sc__sort {
+  padding: 0.5rem 1rem;
+}
+
+.sc__facet ul {
+  list-style: none;
+  padding-left: 0;
+}
+
+@media only screen and (min-width: 800px) {
+
+  .sc__controls {
+    width: 200px;
+    padding: 1rem;
+    background: #EFEFEF;
+    float: left;
+  }
+
+  .sc__content {
+    overflow: auto;
+    padding-left: 1rem;
+  }
+
+}
+```
+
 ## Local setup
 
 ```
