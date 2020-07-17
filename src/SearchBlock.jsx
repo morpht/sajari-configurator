@@ -361,46 +361,50 @@ class SearchBlock extends Component {
 
           {tabs}
 
-          <SortSelect />
+          <div class="sj-input">
 
-          <div className="sj-facets">
-            {Object.keys(this.facetFilters).map((key) => {
-              return(
-                <Facets
-                  filter={this.facetFilters[key]}
-                  counts={this.state.counts[key]}
-                  title={this.props.config.facets[key].title}
-                  name={this.props.config.facets[key].name}
-                  key={"facet-" + key}
-                />
-              );
-            })}
+            <SortSelect />
+
+            <div className="sj-facets">
+              {Object.keys(this.facetFilters).map((key) => {
+                return(
+                  <Facets
+                    filter={this.facetFilters[key]}
+                    counts={this.state.counts[key]}
+                    title={this.props.config.facets[key].title}
+                    name={this.props.config.facets[key].name}
+                    key={"facet-" + key}
+                  />
+                );
+              })}
+            </div>
+
+            <div className="sj-ranges">
+              {Object.keys(this.rangeFilters).map((key) => {
+                return(
+                  <Range
+                    brokenFilters={this.brokenFilters}
+                    filter={this.rangeFilters[key]}
+                    step={this.props.config.ranges[key].step}
+                    title={this.props.config.ranges[key].title}
+                    name={this.props.config.ranges[key].name}
+                    key={"range-" + key}
+                  />
+                );
+              })}
+            </div>
+
           </div>
 
-          <div className="sj-ranges">
-            {Object.keys(this.rangeFilters).map((key) => {
-              return(
-                <Range
-                  brokenFilters={this.brokenFilters}
-                  filter={this.rangeFilters[key]}
-                  step={this.props.config.ranges[key].step}
-                  title={this.props.config.ranges[key].title}
-                  name={this.props.config.ranges[key].name}
-                  key={"range-" + key}
-                />
-              );
-            })}
+          <div class="sj-output">
+
+            <Response>
+              <Summary />
+              {results}
+              {pager}
+            </Response>
+
           </div>
-
-          <Response>
-
-            <Summary />
-
-            {results}
-
-            {pager}
-
-          </Response>
 
         </div>
       </Provider>
