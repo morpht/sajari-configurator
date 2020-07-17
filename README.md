@@ -138,13 +138,13 @@ var config = {
   ],
 
   // Results callback. (Use a custom template)
+  // Delete to use default Sajari result template.
   // @param results - An array of results. Each result contains variables:
   // - title
   // - description
   // - url
   // - image
   // @return A string of HTML.
-  resultsEnabled: true,
   resultsCallback: function(results) {
     // Example only. Replace with your own rendering logic.
     var html = "<ul>";

@@ -342,7 +342,7 @@ class SearchBlock extends Component {
     ////
 
     var results = <Results className="sc__results"/>
-    if (this.props.config.resultsEnabled != undefined && this.props.config.resultsEnabled == true && this.props.config.resultsCallback != undefined) {
+    if (this.props.config.resultsCallback != undefined) {
       var html = '';
       // 1. CustomResults calls processResults with results.
       // 2. processResults requests HTML from resultsCallback.
