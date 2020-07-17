@@ -172,7 +172,7 @@ Almost no styling is included by default. You should add your own:
   font-family: "Arial";
 }
 
-.sj__tabs {
+.sj-tabs {
   margin-top: 1rem;
 }
 
