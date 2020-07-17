@@ -357,11 +357,13 @@ class SearchBlock extends Component {
       <Provider search={{ pipeline, values, config }}>
         <div className={"sj-block"}>
 
-          <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
+          <div className="sj-search">
+            <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
+          </div>
 
           {tabs}
 
-          <div class="sj-input">
+          <div className="sj-controls">
 
             <SortSelect />
 
@@ -396,7 +398,7 @@ class SearchBlock extends Component {
 
           </div>
 
-          <div class="sj-output">
+          <div className="sj-content">
 
             <Response>
               <Summary />
