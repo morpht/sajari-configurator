@@ -259,12 +259,12 @@ class SearchBlock extends Component {
       // Show facets after search.
       return (
         <FilterProvider filter={props.filter}>
-          <div className={"sj-facet"}>
-            <h3 className={"sj-facet__title"}>{props.title}</h3>
+          <div className={"sc__facet sc__facet--" + props.name }>
+            <h3 className={"sc__facet-title"}>{props.title}</h3>
             <ul>
               {Object.keys(props.counts).map((i) => {
                 return (
-                  <li key={"sj-facet__item sj-facet__item-" + props.counts[i].name}>
+                  <li key={"sc__facet-item sc__facet-item--" + props.counts[i].name}>
                     <Checkbox name={props.counts[i].name} />
                     <label>{props.counts[i].name} ({props.counts[i].count})</label>
                   </li>
@@ -287,8 +287,8 @@ class SearchBlock extends Component {
       }
       // UI.
       return (
-        <div className={"sj-range-" + props.name}>
-          <h3 className={"sj-range__title"}>{props.title}</h3>
+        <div className={"sc__range sc__range--" + props.name}>
+          <h3 className={"sj__range-title"}>{props.title}</h3>
           <RangeSlider
             filter={props.filter}
             step={props.step}
@@ -305,7 +305,7 @@ class SearchBlock extends Component {
       // UI.
       return (
         <select
-          className="sj-sort"
+          className="sc__sort"
           onChange={event => {
             this.values.set(JSON.parse(event.target.value));
             this.pipeline.search(values.get());
@@ -329,21 +329,26 @@ class SearchBlock extends Component {
 
     let pager;
     if (this.props.config.pager) {
-      pager = <Paginator className="sj-pager"/>;
+      pager = <Paginator />;
+    }
+
+    let summary;
+    if (this.props.config.summaryEnabled != undefined && this.props.config.summaryEnabled == true) {
+      summary = <Summary />
     }
 
     ////
     // RESULTS TEMPLATE
     ////
 
-    var results = <Results className="sj-results"/>
+    var results = <Results className="sc__results"/>
     if (this.props.config.resultsEnabled != undefined && this.props.config.resultsEnabled == true && this.props.config.resultsCallback != undefined) {
       var html = '';
       // 1. CustomResults calls processResults with results.
       // 2. processResults requests HTML from resultsCallback.
       // 3. processResults returns HTML to CustomResults.
       // 4. CustomResults renders the HTML.
-      results = <CustomResults className="sj-results" processResults={(results) => {
+      results = <CustomResults className="sc__results" processResults={(results) => {
         return this.props.config.resultsCallback(results);
       }} />;
     }
@@ -355,19 +360,19 @@ class SearchBlock extends Component {
     return (
       // Provide state, send query and return response.
       <Provider search={{ pipeline, values, config }}>
-        <div className={"sj-block"}>
+        <div className={"sc"}>
 
-          <div className="sj-search">
+          <div className="sc__search">
             <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
           </div>
 
           {tabs}
 
-          <div className="sj-controls">
+          <div className="sc__controls">
 
             <SortSelect />
 
-            <div className="sj-facets">
+            <div className="sc__facets">
               {Object.keys(this.facetFilters).map((key) => {
                 return(
                   <Facets
@@ -381,7 +386,7 @@ class SearchBlock extends Component {
               })}
             </div>
 
-            <div className="sj-ranges">
+            <div className="sc__ranges">
               {Object.keys(this.rangeFilters).map((key) => {
                 return(
                   <Range
@@ -398,10 +403,10 @@ class SearchBlock extends Component {
 
           </div>
 
-          <div className="sj-content">
+          <div className="sc__content">
 
             <Response>
-              <Summary />
+              {summary}
               {results}
               {pager}
             </Response>

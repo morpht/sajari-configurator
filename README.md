@@ -48,6 +48,9 @@ var config = {
   ],
   resultsPerPage: 10,
 
+  // Summary.
+  summaryEnabled: true,
+
   // Pager.
   pager: true,
 
@@ -133,7 +136,7 @@ var config = {
       descending: false,
     }
   ],
-  
+
   // Results callback. (Use a custom template)
   // @param results - An array of results. Each result contains variables:
   // - title
