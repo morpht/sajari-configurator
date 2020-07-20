@@ -69,8 +69,8 @@ class SearchBlock extends Component {
     ////
 
     var tracking = new NoTracking();
-    if (this.props.config.tracking) {
-      tracking = new ClickTracking("url", this.props.config.qParam);
+    if (this.props.config.trackingEnabled != undefined && this.props.config.trackingEnabled) {
+      tracking = new ClickTracking();
     }
 
     this.pipeline = new Pipeline(
@@ -238,7 +238,7 @@ class SearchBlock extends Component {
     ////
 
     let tabs;
-    if (this.props.config.tabs != undefined) {
+    if (this.props.config.tabsEnabled != undefined && this.props.config.tabsEnabled) {
       // Create tabs from tabs filter.
       tabs = <Tabs filter={this.tabsFilter} tabs={this.tabs_display} />;
     }
@@ -249,7 +249,7 @@ class SearchBlock extends Component {
 
     var Facets = (props) => {
       // Default facets to empty.
-      if (!this.props.config.facetsEnabled || this.props.config.facets == undefined) {
+      if (this.props.config.facetsEnabled == undefined || !this.props.config.facetsEnabled) {
         return null;
       }
       // Ensure facet has results.
@@ -282,7 +282,7 @@ class SearchBlock extends Component {
 
     var Range = (props) => {
       // Hide range when no config.
-      if (!this.props.config.rangesEnabled || this.props.config.ranges == undefined) {
+      if (this.props.config.rangesEnabled == undefined || !this.props.config.rangesEnabled) {
         return null;
       }
       // UI.
@@ -299,7 +299,7 @@ class SearchBlock extends Component {
 
     var SortSelect = (props) => {
       // Hide sort when no config.
-      if (!this.props.config.sortsEnabled || this.props.config.sorts == undefined) {
+      if (this.props.config.sorts == undefined || !this.props.config.sortsEnabled) {
         return null;
       }
       // UI.
@@ -328,7 +328,7 @@ class SearchBlock extends Component {
     ////
 
     let pager;
-    if (this.props.config.pager) {
+    if (this.props.config.pagerEnabled != undefined && this.props.config.pagerEnabled == true) {
       pager = <Paginator />;
     }
 

@@ -52,11 +52,11 @@ var config = {
   summaryEnabled: true,
 
   // Pager.
-  pager: true,
+  pagerEnabled: true,
 
   // Tracking.
   // See: https://www.sajari.com/docs/user-guide/analytics/click-tracking/
-  tracking: true,
+  trackingEnabled: true,
 
   // Query.
   maxSuggestions: 6,
