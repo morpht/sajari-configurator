@@ -162,12 +162,6 @@ var config = {
 Almost no styling is included by default. You should add your own:
 
 ```css
-.container {
-  max-width: 1000px;
-  margin: 0 auto;
-  padding: 20px;
-}
-
 .sc {
   font-family: "Arial";
 }
