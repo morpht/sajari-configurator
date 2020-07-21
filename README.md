@@ -68,12 +68,13 @@ var config = {
   filter: 'type="article"',
 
   // Tabs.
-  allTabLabel: "All",
-  defaultTab: "All",
-  // Note: Lowercase tab machine names currently cause a bad response:
-  // "Search request failed due to a configuration error."
   tabsEnabled: true,
+  defaultTab: "All",
   tabs: [
+    {
+      title: "All",
+      filter: '',
+    },
     {
       name: "One",
       title: "One",
