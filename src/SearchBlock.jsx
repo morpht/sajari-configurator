@@ -240,8 +240,7 @@ class SearchBlock extends Component {
     ///
 
     let search = <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
-    if (this.props.config.suggestionsEnabled != undefined && this.props.config.suggestionsEnabled) {
-      // Create tabs from tabs filter.
+    if (this.props.config.maxSuggestions != undefined && this.props.config.maxSuggestions > 0) {
       search = <Input
         mode="typeahead"
         dropdownMode="suggestions"

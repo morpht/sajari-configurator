@@ -61,9 +61,6 @@ var config = {
   // Query.
   inputPlaceholder: "Enter your search term",
   param: "search",
-
-  // Suggestions.
-  suggestionsEnabled: true,
   maxSuggestions: 5,
 
   // Filter. Multiple filters look like:
