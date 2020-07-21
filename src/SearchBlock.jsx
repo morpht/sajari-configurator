@@ -354,10 +354,12 @@ class SearchBlock extends Component {
     }
 
     ////
-    // RESULTS TEMPLATE
+    // RESULTS.
     ////
 
+    // Default results/result components.
     var results = <Results className="sc__results"/>
+    // Custom results template.
     if (this.props.config.resultsCallback != undefined) {
       var html = '';
       // 1. CustomResults calls processResults with results.
