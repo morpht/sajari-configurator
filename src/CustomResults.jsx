@@ -94,7 +94,7 @@ class CustomResults extends React.Component {
 
           // Assert results valid.
           if (error) {
-            return <div class="sj-error">{error.message}</div>;
+            return <div className="sj-error">{error.message}</div>;
           }
           if (results === undefined) {
             return null;

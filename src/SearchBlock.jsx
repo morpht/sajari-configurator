@@ -102,22 +102,21 @@ class SearchBlock extends Component {
     }
 
     // Setup tab filter.
-    this.tabsFilter = [];
     if (this.props.config.tabs != undefined) {
-      // Create "All" tab.
-      this.tabs = { All: "" };
-      this.tabs_display = [{ name: "All", display: this.props.config.allTabLabel }];
+      this.tabsFilterTabs = {};
+      this.tabs = [];
       // Create tabs from config.
       this.props.config.tabs.forEach((tab) => {
-        this.tabs[tab.name] = tab.filter;
-        this.tabs_display.push({ name: tab.name, display: tab.title });
+        this.tabsFilterTabs[tab.title] = tab.filter;
+        this.tabs.push({ name: tab.title, display: tab.title });
       });
       // Create tab filter.
+      this.tabsFilter = [];
       if (this.props.config.defaultTab != undefined) {
-        this.tabsFilter = new Filter(this.tabs, [this.props.config.defaultTab]);
+        this.tabsFilter = new Filter(this.tabsFilterTabs, [this.props.config.defaultTab]);
       }
       else {
-        this.tabsFilter = new Filter(this.tabs, ["All"]);
+        this.tabsFilter = new Filter(this.tabsFilterTabs);
       }
     }
 
@@ -240,7 +239,7 @@ class SearchBlock extends Component {
     let tabs;
     if (this.props.config.tabsEnabled != undefined && this.props.config.tabsEnabled) {
       // Create tabs from tabs filter.
-      tabs = <Tabs filter={this.tabsFilter} tabs={this.tabs_display} />;
+      tabs = <Tabs filter={this.tabsFilter} tabs={this.tabs} />;
     }
 
     ////
