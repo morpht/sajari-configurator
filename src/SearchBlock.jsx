@@ -189,6 +189,9 @@ class SearchBlock extends Component {
         console.log(this.pipeline.response);
         return;
       }
+      else {
+        console.log(this.pipeline.response);
+      }
 
       // Update facets.
       if (this.pipeline.response.response.get("aggregates")) {
@@ -231,6 +234,21 @@ class SearchBlock extends Component {
     var pipeline = this.pipeline;
     var values = this.values;
     var config = this.searchConfig;
+
+    ////
+    // SEARCH.
+    ///
+
+    let search = <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
+    if (this.props.config.suggestionsEnabled != undefined && this.props.config.suggestionsEnabled) {
+      // Create tabs from tabs filter.
+      search = <Input
+        mode="typeahead"
+        dropdownMode="suggestions"
+        placeholder={this.props.config.inputPlaceholder}
+        defaultValue={this.values.get()["q"]}
+      />
+    }
 
     ////
     // TABS.
@@ -362,7 +380,7 @@ class SearchBlock extends Component {
         <div className={"sc"}>
 
           <div className="sc__search">
-            <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
+            {search}
           </div>
 
           {tabs}

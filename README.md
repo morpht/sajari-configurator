@@ -59,9 +59,12 @@ var config = {
   trackingEnabled: true,
 
   // Query.
-  maxSuggestions: 6,
   inputPlaceholder: "Enter your search term",
   param: "search",
+
+  // Suggestions.
+  suggestionsEnabled: true,
+  maxSuggestions: 5,
 
   // Filter. Multiple filters look like:
   // "((domain="one.example.com")) AND ((product='clothing'))"
