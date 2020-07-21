@@ -112,8 +112,8 @@ class SearchBlock extends Component {
       });
       // Create tab filter.
       this.tabsFilter = [];
-      if (this.props.config.defaultTab != undefined) {
-        this.tabsFilter = new Filter(this.tabsFilterTabs, [this.props.config.defaultTab]);
+      if (this.props.config.tabsDefault != undefined) {
+        this.tabsFilter = new Filter(this.tabsFilterTabs, [this.props.config.tabsDefault]);
       }
       else {
         this.tabsFilter = new Filter(this.tabsFilterTabs);

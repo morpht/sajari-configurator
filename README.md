@@ -69,7 +69,7 @@ var config = {
 
   // Tabs.
   tabsEnabled: true,
-  defaultTab: "All",
+  tabsDefault: "All",
   tabs: [
     {
       title: "All",
