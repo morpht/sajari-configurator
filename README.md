@@ -114,7 +114,7 @@ var config = {
 
   // Sort. Use "name" as the "sortsDefault" value.
   sortsEnabled: false,
-  sortsDefault: "-published_time",
+  sortsDefault: "",
   sorts: [
     {
       name: "",
