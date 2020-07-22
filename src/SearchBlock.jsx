@@ -61,7 +61,8 @@ class SearchBlock extends Component {
 
     this.state = {
       counts: [],
-      oldCounts: ''
+      oldCounts: '',
+      sortValue: "{ sort: " + this.props.config.sortsDefault + " }"
     };
 
     ////
@@ -204,7 +205,7 @@ class SearchBlock extends Component {
           // Update facets.
           this.setCounts(this.pipeline);
           // Store counts to keep track of changes.
-          this.setState({oldCounts: newCounts});
+          this.setState({ oldCounts: newCounts });
         }
       }
 
@@ -323,16 +324,19 @@ class SearchBlock extends Component {
         <select
           className="sc__sort"
           onChange={event => {
-            this.values.set(JSON.parse(event.target.value));
+            let sortValue = event.target.value;
+            // Search pipeline.
+            this.values.set(JSON.parse(sortValue));
             this.pipeline.search(values.get());
-           }}
-         >
-          <option value={JSON.stringify({ sort: "" })}>{this.props.config.sortsDefault}</option>
+            // Update select.
+            this.setState({ sortValue: sortValue });
+          }}
+          value={this.state.sortValue}
+        >
           {Object.keys(this.props.config.sorts).map((i) => {
-            var option = this.props.config.sorts[i];
-            var order = option.descending ? "-" : "";
+            var item = this.props.config.sorts[i];
             return (
-              <option value={JSON.stringify({ sort: order + option.name })} key={"option-" + option.title}>{option.title}</option>
+              <option value={JSON.stringify({ sort: item.name })} key={"option-" + item.title}>{item.title}</option>
             )
           })}
         </select>
@@ -388,7 +392,7 @@ class SearchBlock extends Component {
 
           <div className="sc__controls">
 
-            <SortSelect />
+            <SortSelect sortValue={this.props.sortValue}/>
 
             <div className="sc__facets">
               {Object.keys(this.facetFilters).map((key) => {

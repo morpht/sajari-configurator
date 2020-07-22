@@ -112,39 +112,35 @@ var config = {
     }
   ],
 
-  // Sort.
+  // Sort. Use "name" as the "sortsDefault" value.
   sortsEnabled: false,
-  sortsDefault: "Relevancy",
+  sortsDefault: "-published_time",
   sorts: [
     {
-      name: "published_time",
-      title: "Newest",
-      descending: true,
+      name: "",
+      title: "Relevancy"
+    },
+    {
+      name: "-published_time",
+      title: "Newest"
     },
     {
       name: "published_time",
-      title: "Oldest",
-      descending: false,
+      title: "Oldest"
+    },
+    {
+      name: "-popularityScore",
+      title: "Best"
     },
     {
       name: "popularityScore",
-      title: "Best",
-      descending: true,
-    },
-    {
-      name: "popularityScore",
-      title: "Worst",
-      descending: false,
+      title: "Worst"
     }
   ],
 
   // Results callback. (Use a custom template)
-  // Delete to use default Sajari result template.
-  // @param results - An array of results. Each result contains variables:
-  // - title
-  // - description
-  // - url
-  // - image
+  // Delete callback to use Sajari's default <Result> component.
+  // @param results - An array of results. A result contains configured "fields".
   // @return A string of HTML.
   resultsCallback: function(results) {
     // Example only. Replace with your own rendering logic.
