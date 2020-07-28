@@ -62,7 +62,7 @@ class SearchBlock extends Component {
     this.state = {
       counts: [],
       oldCounts: '',
-      sortValue: "{ sort: " + this.props.config.sortsDefault + " }"
+      sortValue: { sort: this.props.config.sortsDefault }
     };
 
     ////
@@ -331,7 +331,9 @@ class SearchBlock extends Component {
             // Update select.
             this.setState({ sortValue: sortValue });
           }}
-          value={this.state.sortValue}
+          // Select value by default.
+          // Note: This value attribute will not show in console HTML source.
+          value={JSON.stringify(props.sortValue)}
         >
           {Object.keys(this.props.config.sorts).map((i) => {
             var item = this.props.config.sorts[i];
@@ -392,7 +394,7 @@ class SearchBlock extends Component {
 
           <div className="sc__controls">
 
-            <SortSelect sortValue={this.props.sortValue}/>
+            <SortSelect sortValue={this.state.sortValue}/>
 
             <div className="sc__facets">
               {Object.keys(this.facetFilters).map((key) => {
