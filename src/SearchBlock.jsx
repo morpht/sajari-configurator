@@ -412,16 +412,18 @@ class SearchBlock extends Component {
 
             <div className="sc__ranges">
               {Object.keys(this.rangeFilters).map((key) => {
-                return(
-                  <Range
-                    brokenFilters={this.brokenFilters}
-                    filter={this.rangeFilters[key]}
-                    step={this.props.config.ranges[key].step}
-                    title={this.props.config.ranges[key].title}
-                    name={this.props.config.ranges[key].name}
-                    key={"range-" + key}
-                  />
-                );
+                // Show range filter when query set.
+                if (this.values.get().hasOwnProperty("q")) {
+                  return(
+                    <Range
+                      filter={this.rangeFilters[key]}
+                      step={this.props.config.ranges[key].step}
+                      title={this.props.config.ranges[key].title}
+                      name={this.props.config.ranges[key].name}
+                      key={"range-" + key}
+                    />
+                  );
+                }
               })}
             </div>
 
