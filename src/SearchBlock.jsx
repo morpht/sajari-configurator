@@ -329,7 +329,7 @@ class SearchBlock extends Component {
             this.values.set(JSON.parse(sortValue));
             this.pipeline.search(values.get());
             // Update select.
-            this.setState({ sortValue: sortValue });
+            this.setState({ sortValue: JSON.parse(sortValue) });
           }}
           // Select value by default.
           // Note: This value attribute will not show in console HTML source.
