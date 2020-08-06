@@ -59,6 +59,8 @@ var config = {
   trackingEnabled: true,
 
   // Query.
+  searchboxEnabled: true,
+  queryWhenEmpty: false,
   inputPlaceholder: "Enter your search term",
   param: "search",
   maxSuggestions: 5,
