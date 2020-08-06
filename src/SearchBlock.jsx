@@ -167,14 +167,25 @@ class SearchBlock extends Component {
       this.pipeline.search(this.values.get());
     }
 
+    // Update search when queryWhenEmpty enabled.
+    if (this.props.config.queryWhenEmpty != undefined && this.props.config.queryWhenEmpty) {
+      // Search pipeline.
+      this.pipeline.search(this.values.get());
+    }
+
     // Update search when filter changed.
     this.filters.listen(EVENT_SELECTION_UPDATED, () => {
       this.values._emitUpdated();
 
-      // Validate that query is not empty.
-      const query = this.values.get()["q"];
-      if (query === undefined || query === "") {
-        return;
+      // Validate that query is not empty when initiated by search query.
+      if (
+        this.props.config.queryWhenEmpty != undefined && this.props.config.queryWhenEmpty == false &&
+        this.props.config.searchboxEnabled != undefined && this.props.config.searchboxEnabled == true
+      ) {
+        const query = this.values.get()["q"];
+        if (query === undefined || query === "") {
+          return;
+        }
       }
 
       // Search pipeline.
@@ -210,7 +221,9 @@ class SearchBlock extends Component {
       }
 
       // Update URL when query changes.
-      history.pushState({}, null, "?" + this.props.config.param + "=" + this.values.get()["q"]);
+      if (this.values.get()["q"] != undefined) {
+        history.pushState({}, null, "?" + this.props.config.param + "=" + this.values.get()["q"]);
+      }
     });
 
   }
@@ -240,14 +253,21 @@ class SearchBlock extends Component {
     // SEARCH.
     ///
 
-    let search = <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
-    if (this.props.config.maxSuggestions != undefined && this.props.config.maxSuggestions > 0) {
-      search = <Input
-        mode="typeahead"
-        dropdownMode="suggestions"
-        placeholder={this.props.config.inputPlaceholder}
-        defaultValue={this.values.get()["q"]}
-      />
+    let search = '';
+    if (this.props.config.searchboxEnabled != undefined && this.props.config.searchboxEnabled) {
+      // Autocomplete search.
+      if (this.props.config.maxSuggestions != undefined && this.props.config.maxSuggestions > 0) {
+        search = <Input
+          mode="typeahead"
+          dropdownMode="suggestions"
+          placeholder={this.props.config.inputPlaceholder}
+          defaultValue={this.values.get()["q"]}
+        />
+      }
+      // Normal search.
+      else {
+        search = <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
+      }
     }
 
     ////
