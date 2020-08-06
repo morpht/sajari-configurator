@@ -177,17 +177,6 @@ class SearchBlock extends Component {
     this.filters.listen(EVENT_SELECTION_UPDATED, () => {
       this.values._emitUpdated();
 
-      // Validate that query is not empty when initiated by search query.
-      if (
-        this.props.config.queryWhenEmpty != undefined && this.props.config.queryWhenEmpty == false &&
-        this.props.config.searchboxEnabled != undefined && this.props.config.searchboxEnabled == true
-      ) {
-        const query = this.values.get()["q"];
-        if (query === undefined || query === "") {
-          return;
-        }
-      }
-
       // Search pipeline.
       this.pipeline.search(this.values.get());
     });
