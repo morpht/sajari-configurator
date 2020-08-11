@@ -55,7 +55,7 @@ var config = {
   pagerEnabled: true,
 
   // Tracking.
-  // See: https://www.sajari.com/docs/user-guide/analytics/click-tracking/
+  // See https://www.sajari.com/docs/user-guide/analytics/click-tracking/
   trackingEnabled: true,
 
   // Query.
@@ -65,7 +65,8 @@ var config = {
   param: "search",
   maxSuggestions: 5,
 
-  // Filter. Multiple filters look like:
+  // Filter.
+  // Multiple filters look like:
   // "((domain="one.example.com")) AND ((product='clothing'))"
   filter: 'type="article"',
 
@@ -114,7 +115,8 @@ var config = {
     }
   ],
 
-  // Sort. Use "name" as the "sortsDefault" value.
+  // Sort.
+  // Use "name" values as the "sortsDefault" value.
   sortsEnabled: false,
   sortsDefault: "",
   sorts: [
@@ -140,7 +142,7 @@ var config = {
     }
   ],
 
-  // Results callback. (Use a custom template)
+  // Custom template.
   // Delete callback to use Sajari's default <Result> component.
   // @param results - An array of results. A result contains configured "fields".
   // @return A string of HTML.
