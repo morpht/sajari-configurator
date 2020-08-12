@@ -243,7 +243,12 @@ class SearchBlock extends Component {
     ///
 
     let search = '';
-    if (this.props.config.searchboxEnabled != undefined && this.props.config.searchboxEnabled) {
+    // Show search by default unless configured as disabled.
+    let showSearch = true;
+    if (this.props.config.searchboxEnabled != undefined && this.props.config.searchboxEnabled == false) {
+      showSearch = false;
+    }
+    if (showSearch) {
       // Autocomplete search.
       if (this.props.config.maxSuggestions != undefined && this.props.config.maxSuggestions > 0) {
         search = <Input
