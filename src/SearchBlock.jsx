@@ -125,7 +125,11 @@ class SearchBlock extends Component {
     this.facetFilters = [];
     if (this.props.config.facets != undefined) {
       for (var facet of this.props.config.facets) {
-        this.facetFilters.push(new CountAggregateFilter(facet.name, this.pipeline, this.values));
+        let isList = false;
+        if (facet.isList != undefined && facet.isList == true) {
+          isList = true;
+        }
+        this.facetFilters.push(new CountAggregateFilter(facet.name, this.pipeline, this.values, false, '~', isList));
       }
     }
 

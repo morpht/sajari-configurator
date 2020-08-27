@@ -95,11 +95,13 @@ var config = {
   facets: [
     {
       name: "type",
-      title: "Type"
+      title: "Type",
+      isList: false
     },
     {
-      name: "topic",
-      title: "Topic"
+      name: "tags",
+      title: "Tags",
+      isList: true
     }
   ],
 
