@@ -195,6 +195,7 @@ class SearchBlock extends Component {
         return;
       }
       else {
+        console.log("RESPONSE:");
         console.log(this.pipeline.response);
       }
 
@@ -300,8 +301,8 @@ class SearchBlock extends Component {
               {Object.keys(props.counts).map((i) => {
                 return (
                   <li key={"sc__facet-item sc__facet-item--" + props.counts[i].name}>
-                    <Checkbox name={props.counts[i].name} />
-                    <label>{props.counts[i].name} ({props.counts[i].count})</label>
+                    <Checkbox id={props.counts[i].name} name={props.counts[i].name} />
+                    <label htmlFor={props.counts[i].name}>{props.counts[i].name} ({props.counts[i].count})</label>
                   </li>
                 );
               })}
@@ -390,7 +391,7 @@ class SearchBlock extends Component {
       // 2. processResults requests HTML from resultsCallback.
       // 3. processResults returns HTML to CustomResults.
       // 4. CustomResults renders the HTML.
-      results = <CustomResults className="sc__results" processResults={(results) => {
+      results = <CustomResults className="sc__results" config={this.props.config} processResults={(results) => {
         return this.props.config.resultsCallback(results);
       }} />;
     }

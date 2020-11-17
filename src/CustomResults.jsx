@@ -15,7 +15,7 @@ import {
 
 const STATUS_UNAUTHORISED = 403;
 
-export const CustomResultsContainer: React.SFC = ({children, fields}) => {
+export const CustomResultsContainer: React.FunctionComponent = ({children, fields, trackingEnabled}) => {
   return (
     <Consumer>
       {({ search: { response }, resultClicked }) => {
@@ -54,6 +54,11 @@ export const CustomResultsContainer: React.SFC = ({children, fields}) => {
               token = undefined;
             }
 
+            // Replace link with analytics token.
+            if (trackingEnabled) {
+              result.values.url = result.token.click
+            }
+
             const values = {
               ...result.values,
               title: result.values[fields?.title ?? "title"],
@@ -88,8 +93,13 @@ class CustomResults extends React.Component {
       processResults
     } = this.props;
 
+    var trackingEnabled = false
+    if (this.props.config.trackingEnabled != undefined && this.props.config.trackingEnabled) {
+      trackingEnabled = true
+    }
+
     return (
-      <CustomResultsContainer fields={fields}>
+      <CustomResultsContainer fields={fields} trackingEnabled={trackingEnabled}>
         {({ error, results }) => {
 
           // Assert results valid.

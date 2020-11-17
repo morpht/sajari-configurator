@@ -150,11 +150,11 @@ var config = {
   // @return A string of HTML.
   resultsCallback: function(results) {
     // Example only. Replace with your own rendering logic.
-    var html = "<ul>";
+    var html = '<ul>';
     results.forEach(function(result) {
-      html += "<li>" + result.title + "</li>";
+      html += '<li><a href="' + result.url + '">' + result.title + '</a></li>';
     });
-    html += "</ul>"
+    html += '</ul>'
     return html;
   }
 };
