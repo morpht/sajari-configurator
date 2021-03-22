@@ -227,7 +227,9 @@ class SearchBlock extends Component {
     // Track the counts for selected facets.
     var counts = [];
     for (var [key, value] of Object.entries(this.facetFilters)) {
-      counts[key] = value.getCounts();
+      if (value._counts && value._counts.length > 0) {
+        counts[key] = value.getCounts();
+      }
     }
     this.setState({ counts: counts });
 
@@ -395,6 +397,7 @@ class SearchBlock extends Component {
         return this.props.config.resultsCallback(results);
       }} />;
     }
+    var sc_controls = this.state.counts && this.state.counts.length > 0 ? true: false;
 
     ////
     // SEARCH BLOCK.
@@ -410,7 +413,7 @@ class SearchBlock extends Component {
           </div>
 
           {tabs}
-
+          { sc_controls ? (
           <div className="sc__controls">
 
             <SortSelect sortValue={this.state.sortValue}/>
@@ -447,6 +450,7 @@ class SearchBlock extends Component {
             </div>
 
           </div>
+          ) : null }
 
           <div className="sc__content">
 
