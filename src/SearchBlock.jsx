@@ -180,6 +180,8 @@ class SearchBlock extends Component {
     // Update search when filter changed.
     this.filters.listen(EVENT_SELECTION_UPDATED, () => {
       this.values._emitUpdated();
+      // Reset the page to 1 when filter changed.
+      this.values.set({ page: 1 });
 
       // Search pipeline.
       this.pipeline.search(this.values.get());
