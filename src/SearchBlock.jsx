@@ -62,7 +62,8 @@ class SearchBlock extends Component {
     this.state = {
       counts: [],
       oldCounts: '',
-      sortValue: { sort: this.props.config.sortsDefault }
+      sortValue: { sort: this.props.config.sortsDefault },
+      showSummary: true
     };
 
     ////
@@ -189,6 +190,13 @@ class SearchBlock extends Component {
 
     // Handle responses.
     this.pipeline.listen(EVENT_RESPONSE_UPDATED, () => {
+      // Handle summary visibility.
+      if (this.props.config.queryWhenEmpty != undefined && this.props.config.queryWhenEmpty == true && this.values.get().hasOwnProperty("q") == false) {
+        this.setState({ showSummary: false });
+      }
+      else {
+        this.setState({ showSummary: true });
+      }
 
       // Handle when a bad query results in no response.
       if (this.pipeline.response.response == undefined) {
@@ -400,6 +408,9 @@ class SearchBlock extends Component {
       }} />;
     }
     var sc_controls = this.state.counts && this.state.counts.length > 0 ? true: false;
+    if (this.state.showSummary == false) {
+      summary = null;
+    }
 
     ////
     // SEARCH BLOCK.
