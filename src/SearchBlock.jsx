@@ -251,6 +251,16 @@ class SearchBlock extends Component {
 
   render() {
 
+    // Update search when queryWhenEmpty enabled.
+    if (this.props.config.queryWhenEmpty != undefined && this.props.config.queryWhenEmpty && this.pipeline.response.response == undefined && this.values.get()["q"] === "null") {
+      this.values._emitUpdated();
+      // Set value.
+      this.values.set({"q": undefined});
+      this.values.set({"q.override": undefined});
+      // Search pipeline.
+      this.pipeline.search(this.values.get());
+    }
+
     var pipeline = this.pipeline;
     var values = this.values;
     var config = this.searchConfig;
