@@ -265,10 +265,6 @@ class SearchBlock extends Component {
     if (this.props.config.searchboxEnabled != undefined && this.props.config.searchboxEnabled == false) {
       showSearch = false;
     }
-    let searchDefaultValue = this.values.get()["q"];
-    if (searchDefaultValue === "null") {
-      searchDefaultValue = '';
-    }
     if (showSearch) {
       // Autocomplete search.
       if (this.props.config.maxSuggestions != undefined && this.props.config.maxSuggestions > 0) {
@@ -276,12 +272,12 @@ class SearchBlock extends Component {
           mode="typeahead"
           dropdownMode="suggestions"
           placeholder={this.props.config.inputPlaceholder}
-          defaultValue={searchDefaultValue}
+          defaultValue={this.values.get()["q"]}
         />
       }
       // Normal search.
       else {
-        search = <Input placeholder={this.props.config.inputPlaceholder} defaultValue={searchDefaultValue} />
+        search = <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
       }
     }
 
