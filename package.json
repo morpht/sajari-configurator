@@ -1,6 +1,6 @@
 {
   "name": "sajari-configurator",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "Integrates the Sajari React SDK into Drupal.",
   "main": "src/index.js",
   "scripts": {
