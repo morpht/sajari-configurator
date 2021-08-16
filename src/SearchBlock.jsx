@@ -251,6 +251,16 @@ class SearchBlock extends Component {
 
   render() {
 
+    // Update search when queryWhenEmpty enabled.
+    if (this.props.config.queryWhenEmpty != undefined && this.props.config.queryWhenEmpty && this.pipeline.response.response == undefined && this.values.get()["q"] === "null") {
+      this.values._emitUpdated();
+      // Set value.
+      this.values.set({"q": undefined});
+      this.values.set({"q.override": undefined});
+      // Search pipeline.
+      this.pipeline.search(this.values.get());
+    }
+
     var pipeline = this.pipeline;
     var values = this.values;
     var config = this.searchConfig;
@@ -265,10 +275,6 @@ class SearchBlock extends Component {
     if (this.props.config.searchboxEnabled != undefined && this.props.config.searchboxEnabled == false) {
       showSearch = false;
     }
-    let searchDefaultValue = this.values.get()["q"];
-    if (searchDefaultValue === "null") {
-      searchDefaultValue = '';
-    }
     if (showSearch) {
       // Autocomplete search.
       if (this.props.config.maxSuggestions != undefined && this.props.config.maxSuggestions > 0) {
@@ -276,12 +282,12 @@ class SearchBlock extends Component {
           mode="typeahead"
           dropdownMode="suggestions"
           placeholder={this.props.config.inputPlaceholder}
-          defaultValue={searchDefaultValue}
+          defaultValue={this.values.get()["q"]}
         />
       }
       // Normal search.
       else {
-        search = <Input placeholder={this.props.config.inputPlaceholder} defaultValue={searchDefaultValue} />
+        search = <Input placeholder={this.props.config.inputPlaceholder} defaultValue={this.values.get()["q"]} />
       }
     }
 
