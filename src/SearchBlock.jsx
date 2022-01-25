@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { render } from "react-dom";
 import { hot } from "react-hot-loader";
+import AUaccordion from '@gov.au/accordion';
 
 import {
   // Controllers.
@@ -316,21 +317,30 @@ class SearchBlock extends Component {
       }
       // Show facets after search.
       return (
-        <FilterProvider filter={props.filter}>
-          <div className={"sc__facet sc__facet--" + props.name }>
-            <h3 className={"sc__facet-title"}>{props.title}</h3>
-            <ul>
-              {Object.keys(props.counts).map((i) => {
-                return (
-                  <li key={"sc__facet-item sc__facet-item--" + props.counts[i].name}>
-                    <Checkbox id={props.counts[i].name} name={props.counts[i].name} />
-                    <label htmlFor={props.counts[i].name}>{props.counts[i].name} ({props.counts[i].count})</label>
-                  </li>
-                );
-              })}
-            </ul>
-          </div>
-        </FilterProvider>
+        <AUaccordion header={props.title} closed={true}>
+          <FilterProvider filter={props.filter}>
+            <div className={"sc__facet sc__facet--" + props.name }>
+              <h3 className={"sc__facet-title"}>{props.title}</h3>
+              {props.preText != undefined &&
+                <div>{props.preText}</div>
+              }
+              <ul>
+                {Object.keys(props.counts).map((i) => {
+                  return (
+                    <li key={"sc__facet-item sc__facet-item--" + props.counts[i].name}>
+                      <Checkbox id={props.counts[i].name} name={props.counts[i].name} />
+                      <label htmlFor={props.counts[i].name}>{props.counts[i].name} ({props.counts[i].count})</label>
+                    </li>
+                  );
+                })}
+              </ul>
+              {props.postText != undefined &&
+                <div>{props.postText}</div>
+              }
+            </div>
+          </FilterProvider>
+        </AUaccordion>
+        
       );
     };
 
@@ -450,6 +460,8 @@ class SearchBlock extends Component {
                     title={this.props.config.facets[key].title}
                     name={this.props.config.facets[key].name}
                     key={"facet-" + key}
+                    preText={this.props.config.facets[key].preText}
+                    postText={this.props.config.facets[key].postText}
                   />
                 );
               })}
